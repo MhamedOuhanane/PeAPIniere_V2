@@ -7,6 +7,8 @@ export default function Login(props) {
         password: '',
     });
 
+    const [errors, setErrors] = useState({});
+
     async function handleLogin(event) {
         event.preventDefault();
 
@@ -14,9 +16,13 @@ export default function Login(props) {
             method: 'post',
             body: JSON.stringify(formData),
         });
-
-        const data = res.json();
-        console.log(data);
+        
+        const data = await res.json();
+        if (data.errors) {
+            setErrors(data.errors);
+        } else {
+            console.log(data.errors);
+        }
         
     }
 
@@ -26,19 +32,21 @@ export default function Login(props) {
                 <h2 className="text-green-800 text-2xl">{props.title}</h2>
             </div>
             <form onSubmit={handleLogin} className="w-1/2 mx-auto space-y-7 flex flex-col justify-center bg-green-50 py-14 rounded-xl" >
-                <div className="flex justify-center">
+                <div className="flex flex-col items-center">
                     <input type="email" placeholder="Email" 
                         className="px-1" 
                         onChange={(eve) => setFormData({...formData, email: eve.target.value})}
                         // value={formData['email']}
                     />
+                    {errors.email && <p className="errors">{errors.email}</p>}
                 </div>
-                <div className="flex justify-center">
+                <div className="flex flex-col items-center">
                     <input type="password" placeholder="Password"
                         className="px-1" 
                         onChange={(eve) => setFormData({...formData, password: eve.target.value})}
                         // value={formData['password']}
                     />
+                    {errors.password && <p className="errors">{errors.password}</p>}
                 </div>
                 <div className="flex flex-col items-center space-y-3">
                     <button type="submit" className="bg-emerald-300 text-green-500 w-1/2">Connexion</button>
