@@ -1,5 +1,7 @@
+import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Login(props) {
     const [formData, setFormData] = useState({
@@ -20,8 +22,23 @@ export default function Login(props) {
         const data = await res.json();
         if (data.errors) {
             setErrors(data.errors);
+        } else if (!res.ok) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur de connexion',
+                text: data.message,
+                color: 'red',
+                confirmButtonColor: 'Ok',
+
+            });
+            console.log(data.message);
         } else {
-            console.log(data.errors);
+            const token = jwtDecode(data.token);
+            const expirationTokenDate = new Date(token.exp * 1000);
+            console.log(expirationTokenDate.toUTCString());
+            console.log(token);
+
+            document.cookie = `token=${data.token}; path=/; expires=${expirationTokenDate}; SameSite=Strict`;
         }
         
     }
