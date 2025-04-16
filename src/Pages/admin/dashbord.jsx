@@ -48,7 +48,6 @@ export default function TableBord() {
   
     useEffect(() => {
       decodeToken(token);
-      console.log(TokenDecode);
       
     const fetchData = async () => {
       try {
@@ -76,7 +75,7 @@ export default function TableBord() {
     };
 
     fetchData();
-  }, [TokenDecode]);
+  }, [token]);
 
   if (loading) return <div className="text-center py-10 text-lg">Chargement…</div>;
   if (error) return <div className="text-center py-10 text-red-500">Erreur : {error}</div>;

@@ -7,15 +7,13 @@ import Sidebar from "../../components/sidebar";
 export default function Dashboard() {
     const defaultPage = useToken((state) => state.defaultPage);
     const token = useToken((state) => state.token);
-    const decodeToken = useToken((state) => state.decodeToken);
-    const TokenDecode = useToken((state) => {state.decodeToken(token); state.decodeToken});
     
     useEffect(() => {
-        decodeToken(token);
         defaultPage(token);
-    }, [TokenDecode]);
+    }, [token]);
 
     const imageUser = "photos/profile/default.jpg";
+    const UserName = 'User';
     
     return (
       <>
@@ -33,7 +31,7 @@ export default function Dashboard() {
               )}
 
               <div className="flex flex-col">
-                <h2>{TokenDecode.fullName}</h2>
+                <h2>{UserName}</h2>
                 <span className="text-gray-800 text-sm self">Admin</span>
               </div>
             </div>
