@@ -1,7 +1,8 @@
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import useRole from "../../store/redirect";
 
 export default function Login(props) {
     const [formData, setFormData] = useState({
@@ -10,7 +11,14 @@ export default function Login(props) {
     });
 
     const [errors, setErrors] = useState({});
+    const setRoleFromToken = useRole((state) => state.setRoleFromToken);
+    const redirectToRolePage = useRole((state) => state.redirectToRolePage);
 
+
+    useEffect (() => {
+        redirectToRolePage();
+    }, []);
+    
     async function handleLogin(event) {
         event.preventDefault();
 
@@ -23,22 +31,25 @@ export default function Login(props) {
         if (data.errors) {
             setErrors(data.errors);
         } else if (!res.ok) {
+            const message = data.message ? data.message : data.error; 
+            console.log(message);
+            
             Swal.fire({
                 icon: 'error',
                 title: 'Erreur de connexion',
-                text: data.message,
+                text: message ,
                 color: 'red',
-                confirmButtonColor: 'Ok',
-
+                confirmButtonText: 'Ok',
             });
-            console.log(data.message);
         } else {
-            const token = jwtDecode(data.token);
-            const expirationTokenDate = new Date(token.exp * 1000);
-            console.log(expirationTokenDate.toUTCString());
-            console.log(token);
+            const token = data.token;
+            const decodeToken = jwtDecode(token);
+            const expirationTokenDate = new Date(decodeToken.exp * 1000);
 
-            document.cookie = `token=${data.token}; path=/; expires=${expirationTokenDate}; SameSite=Strict`;
+            document.cookie = `token=${token}; path=/; expires=${expirationTokenDate}; SameSite=Strict`;
+
+            setRoleFromToken(token);
+            redirectToRolePage();
         }
         
     }

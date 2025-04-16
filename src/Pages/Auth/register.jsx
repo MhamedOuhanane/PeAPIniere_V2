@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Login(props) {
     const [formData, setFormData] = useState({
@@ -28,7 +29,18 @@ export default function Login(props) {
         } else if (!res.ok) {
             console.log(data.message);
         } else {
-            console.log(data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Inscription réussie !',
+                text: 'Vous pouvez maintenant vous connecter.',
+                color: 'green',
+                confirmButtonText: 'Confermé',
+                confirmButtonColor: '#28a745',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/auth';
+                }
+            });
         }
             
     }

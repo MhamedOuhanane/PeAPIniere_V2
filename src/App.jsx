@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Auth from "./Pages/layouts/auth";
 import Login from "./Pages/Auth/login";
 import Register from "./Pages/Auth/register";
+import Dashboard from "./Pages/layouts/dashboard";
+import TableBord from "./Pages/admin/dashbord";
 
 
 export default function App() {
@@ -22,13 +24,13 @@ export default function App() {
             <Route  index element={<Login title='Connectez-vous à votre compte'/>} />
             <Route  path="register" element={<Register title='Créez votre compte' />} /> 
           </Route>
-          {/* <Route  path="/dashboard" element={<Dashboard />} > */}
-            {/* <Route  index element={<Statistique />} /> */}
+          <Route  path="/admin" element={<Dashboard />} >
+            <Route  index element={<TableBord />} />
             {/* <Route  path="/plante" element={<Plante />} /> */}
             {/* <Route  path="/user" element={<Users />} /> */}
             {/* <Route  path="/categorise" element={<Categorise />} /> */}
             {/* <Route  path="/commande" element={<Commande />} /> */}
-          {/* </Route> */}
+          </Route>
         </Routes>
     </BrowserRouter>
   );
