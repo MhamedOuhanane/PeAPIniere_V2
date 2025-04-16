@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 
+
 function Section({ title, items, columns }) {
   return (
     <div className="mb-10">

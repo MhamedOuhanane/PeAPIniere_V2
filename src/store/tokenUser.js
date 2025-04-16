@@ -35,28 +35,29 @@ const useToken = create((set) => ({
   },
 
   defaultPage: (token = null) => {
-    const currentPath = window.location.pathname;
-  
+    const currentPath = (window.location.pathname).split('/');
+    
+    
     if (token) {
       try {
         const decoded = jwtDecode(token);
         const role = decoded?.role;
   
-        if (role == 'admine' && currentPath != '/admin') {
+        if (role == 'admine' && currentPath[1] != 'admin') {
           window.location.href = "/admin";
-        } else if (role == 'employe' && currentPath != '/employe') {
+        } else if (role == 'employe' && currentPath[1] != 'employe') {
           window.location.href = "/employe";
-        } else if (role == 'client' && currentPath != '/') {
+        } else if (role == 'client' && (currentPath[1] == 'employe' || currentPath[0] == 'admin')) {
           window.location.href = "/";
         }
       } catch (error) {
         console.error("Token invalide: ", error);
-        if (currentPath != '/auth') {
+        if (currentPath[1] != 'auth') {
           window.location.href = "/auth";
         }
       }
     } else {
-      if (currentPath != '/auth' && currentPath != '/auth/register') {
+      if (currentPath[1] != 'auth') {
         window.location.href = "/auth";
       }
     }
