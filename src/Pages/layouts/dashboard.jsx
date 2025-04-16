@@ -1,14 +1,20 @@
 import { Outlet, Link } from "react-router-dom";
 import logo from '../../assets/react.svg';
 import { useEffect, useState } from "react";
+import useToken from "../../store/tokenUser";
 
 export default function Dashboard() {
     const [imageUrl, setImageUrl] = useState('');
+    const defaultPage = useToken((state) => state.defaultPage);
+    const token = useToken((state) => state.token);
+    
+    useEffect (() => {
+        defaultPage(token, 'admine');
+    }, [token]);    
 
-    const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
     const imageUser = token.photo;
     useEffect(() => {
-    fetch('api/image/' + imageUser)
+    fetch('api/photo')
         .then(response => response.json())
         .then(data => setImageUrl(data.url));
     }, [imageUser]);

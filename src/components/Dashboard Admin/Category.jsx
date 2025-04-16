@@ -5,11 +5,11 @@ export default function CategoryManagement() {
     const [categories, setCategories] = useState([])
     const [form, setForm] = useState({ title: "", description: "" })
     const [editingId, setEditingId] = useState(null)
-    const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
+    const token = props.token;
 
     useEffect(() => {
       fetchCategories();
-    }, [])
+    });
 
     const fetchCategories = async () => {
       try {
@@ -20,18 +20,18 @@ export default function CategoryManagement() {
           },
         })
 
+        const data = await res.json()
         if (!res.ok) {
+          const message = data.message ?? data.error; 
           Swal.fire({
             icon: 'error',
             title: 'Récuperation des Categories',
-            text: 'Erreur lors de la récupération des catégories',
+            text: message,
             color: 'red',
             confirmButtonText: 'Ok',
             confirmButtonColor: 'red',
           });
         }
-
-        const data = await res.json()
         setCategories(data)
       } catch (error) {
         Swal.fire({

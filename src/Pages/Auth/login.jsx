@@ -1,24 +1,26 @@
-import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
-import useRole from "../../store/redirect";
+import useToken from "../../store/tokenUser";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login(props) {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-
+    
+    
     const [errors, setErrors] = useState({});
-    const setRoleFromToken = useRole((state) => state.setRoleFromToken);
-    const redirectToRolePage = useRole((state) => state.redirectToRolePage);
-
+    const setToken = useToken((state) => state.setToken);
+    const defaultPage = useToken((state) => state.defaultPage);
+    const token = useToken((state) => state.token);
+    
 
     useEffect (() => {
-        redirectToRolePage();
-    }, []);
-    
+        defaultPage(token, 'visiteur');
+    }, [token]);
+
     async function handleLogin(event) {
         event.preventDefault();
 
@@ -32,7 +34,6 @@ export default function Login(props) {
             setErrors(data.errors);
         } else if (!res.ok) {
             const message = data.message ? data.message : data.error; 
-            console.log(message);
             
             Swal.fire({
                 icon: 'error',
@@ -42,14 +43,8 @@ export default function Login(props) {
                 confirmButtonText: 'Ok',
             });
         } else {
-            const token = data.token;
-            const decodeToken = jwtDecode(token);
-            const expirationTokenDate = new Date(decodeToken.exp * 1000);
-
-            document.cookie = `token=${token}; path=/; expires=${expirationTokenDate}; SameSite=Strict`;
-
-            setRoleFromToken(token);
-            redirectToRolePage();
+            setToken(data.token);
+            defaultPage(token, 'visiteur');
         }
         
     }

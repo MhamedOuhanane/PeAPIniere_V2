@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import useToken from "../../store/tokenUser";
 
 export default function Login(props) {
     const [formData, setFormData] = useState({
@@ -13,6 +14,13 @@ export default function Login(props) {
     });
 
     const [errors, setErrors] = useState({});
+    const defaultPage = useToken((state) => state.defaultPage);
+    const token = useToken((state) => state.token);
+
+
+    useEffect (() => {
+        defaultPage(token);
+    }, [token]);
     
     async function handleRegister(event) {
         event.preventDefault();

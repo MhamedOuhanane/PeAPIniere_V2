@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useRole from "../../store/redirect";
 // import { useNavigate } from "react-router-dom";
 
 function Section({ title, items, columns }) {
@@ -42,8 +41,6 @@ export default function TableBord() {
     const [data, setData] = useState({ users: [], categories: [], plantes: [], commandes: [] });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const setRoleFromToken = useRole((state) => state.setRoleFromToken);
-    const redirectToRolePage = useRole((state) => state.redirectToRolePage);
 //   const history = useNavigate();
 
   useEffect(() => {
@@ -57,9 +54,6 @@ export default function TableBord() {
           return;
         }
         
-
-        setRoleFromToken(token);
-        redirectToRolePage('admine');
         
         const res = await fetch('/api/statistique', {
           method: 'GET',
