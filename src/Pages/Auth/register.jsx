@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useToken from "../../store/tokenUser";
 
-export default function Login(props) {
+export default function Register(props) {
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',

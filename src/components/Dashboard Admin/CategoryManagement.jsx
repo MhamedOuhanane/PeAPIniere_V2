@@ -1,19 +1,22 @@
 import { useState, useEffect } from "react"
 import Swal from "sweetalert2"
+import useToken from "../../store/tokenUser";
 
 export default function CategoryManagement() {
-    const [categories, setCategories] = useState([])
-    const [form, setForm] = useState({ title: "", description: "" })
-    const [editingId, setEditingId] = useState(null)
-    const token = props.token;
+    const [categories, setCategories] = useState([]);
+    const [form, setForm] = useState({ title: "", description: "" });
+    const [editingId, setEditingId] = useState(null);
+    const defautlPage = useToken((state) => state.defautlPage);
+    const token = useToken((state) => state.token);
 
     useEffect(() => {
+      defautlPage(token);
       fetchCategories();
     });
 
     const fetchCategories = async () => {
       try {
-        const res = await fetch("/api/categori", {
+        const res = await fetch("/api/categorie", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

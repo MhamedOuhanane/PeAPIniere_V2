@@ -1,10 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Auth from "./Pages/layouts/auth";
 import Login from "./Pages/Auth/login";
-import Register from "./Pages/Auth/register";
+import Logout from "./Pages/Auth/logout";
 import Dashboard from "./Pages/layouts/dashboard";
 import TableBord from "./Pages/admin/dashbord";
-import Logout from "./Pages/Auth/logout";
+import CategoryManagement from "./components/Dashboard Admin/CategoryManagement";
+import Register from "./Pages/Auth/register";
+import PlantManagement from "./Pages/admin/PlantManagement";
 
 
 export default function App() {
@@ -28,10 +30,10 @@ export default function App() {
           </Route>
           <Route  path="/admin" element={<Dashboard />} >
             <Route  index element={<TableBord />} />
-            {/* <Route  path="/plante" element={<Plante />} /> */}
-            {/* <Route  path="/user" element={<Users />} /> */}
-            {/* <Route  path="/categorise" element={<Categorise />} /> */}
-            {/* <Route  path="/commande" element={<Commande />} /> */}
+            <Route  path="plantes" element={<PlantManagement />} />
+            <Route  path="categories" element={<CategoryManagement />} />
+            {/* <Route  path="users" element={<Users />} /> */}
+            {/* <Route  path="commandes" element={<Commande />} /> */}
           </Route>
         </Routes>
     </BrowserRouter>

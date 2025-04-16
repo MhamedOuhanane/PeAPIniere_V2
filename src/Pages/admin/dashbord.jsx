@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import useToken from "../../store/tokenUser";
 
 
 function Section({ title, items, columns }) {
@@ -42,26 +42,24 @@ export default function TableBord() {
     const [data, setData] = useState({ users: [], categories: [], plantes: [], commandes: [] });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-//   const history = useNavigate();
-
-  useEffect(() => {
+    const token = useToken((state) => state.token);
+    const decodeToken = useToken((state) => state.decodeToken);
+    const TokenDecode = useToken((state) => state.TokenDecode);
+  
+    useEffect(() => {
+      decodeToken(token);
+      console.log(TokenDecode);
+      
     const fetchData = async () => {
       try {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
-
-        if (!token) {
-          setError("Token not found");
-          setLoading(false);
-          return;
-        }
-        
-        
         const res = await fetch('/api/statistique', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
+        
+        
 
         const result = await res.json();
 
@@ -78,7 +76,7 @@ export default function TableBord() {
     };
 
     fetchData();
-  }, []);
+  }, [TokenDecode]);
 
   if (loading) return <div className="text-center py-10 text-lg">Chargement…</div>;
   if (error) return <div className="text-center py-10 text-red-500">Erreur : {error}</div>;
