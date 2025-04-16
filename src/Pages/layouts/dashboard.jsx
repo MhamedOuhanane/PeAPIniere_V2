@@ -8,9 +8,7 @@ export default function Dashboard() {
     const defaultPage = useToken((state) => state.defaultPage);
     const token = useToken((state) => state.token);
     
-    useEffect (() => {
-        defaultPage(token, 'admine');
-    }, [token]);    
+    defaultPage(token);    
 
     const imageUser = token.photo;
     useEffect(() => {

@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import useToken from "../../store/tokenUser";
-import { jwtDecode } from "jwt-decode";
 
 export default function Login(props) {
     const [formData, setFormData] = useState({
@@ -17,9 +16,7 @@ export default function Login(props) {
     const token = useToken((state) => state.token);
     
 
-    useEffect (() => {
-        defaultPage(token, 'visiteur');
-    }, [token]);
+    defaultPage(token, 'visiteur');
 
     async function handleLogin(event) {
         event.preventDefault();

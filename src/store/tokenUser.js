@@ -3,23 +3,6 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
 
-const redirectToRolePage = (role) => {
-  switch (role) {
-    case 'admine':
-      window.location.href = "/admin";
-      break;
-    case 'employe':
-      window.location.href = "/employe";
-      break;
-    case 'client':
-      window.location.href = "/";
-      break;
-    default:
-      window.location.href = "/auth";
-      break;
-  }
-};
-
 const useToken = create((set) => ({
   token: Cookies.get("token") || null,
   TokenDecode: null,
@@ -51,22 +34,34 @@ const useToken = create((set) => ({
     set({ token: null, TokenDecode: null });
   },
 
-  defaultPage: (token = null, role = null) => {
-    if (!role) {
-        return;
-    } 
+  defaultPage: (token = null) => {
+    const currentPath = window.location.pathname;
+  
     if (token) {
-      const decoded = jwtDecode(token);
-        console.log(decoded.role);
-      if (decoded && decoded.role) {
-        redirectToRolePage(decoded.role);
-      } else {
-        redirectToRolePage('visiteur');
+      try {
+        const decoded = jwtDecode(token);
+        const role = decoded?.role;
+  
+        if (role == 'admine' && currentPath != '/admin') {
+          window.location.href = "/admin";
+        } else if (role == 'employe' && currentPath != '/employe') {
+          window.location.href = "/employe";
+        } else if (role == 'client' && currentPath != '/') {
+          window.location.href = "/";
+        }
+      } catch (error) {
+        console.error("Token invalide: ", error);
+        if (currentPath != '/auth') {
+          window.location.href = "/auth";
+        }
       }
     } else {
-      redirectToRolePage('visiteur');
+      if (currentPath != '/auth' && currentPath != '/auth/register') {
+        window.location.href = "/auth";
+      }
     }
   }
+  
 }));
 
 export default useToken;
