@@ -4,6 +4,7 @@ import Login from "./Pages/Auth/login";
 import Register from "./Pages/Auth/register";
 import Dashboard from "./Pages/layouts/dashboard";
 import TableBord from "./Pages/admin/dashbord";
+import Logout from "./Pages/Auth/logout";
 
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
           <Route  path="/auth" element={<Auth />}>
             <Route  index element={<Login title='Connectez-vous à votre compte'/>} />
             <Route  path="register" element={<Register title='Créez votre compte' />} /> 
+            <Route  path="logout" element={<Logout />} /> 
           </Route>
           <Route  path="/admin" element={<Dashboard />} >
             <Route  index element={<TableBord />} />

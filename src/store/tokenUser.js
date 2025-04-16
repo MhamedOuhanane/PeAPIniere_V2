@@ -57,7 +57,7 @@ const useToken = create((set) => ({
         }
       }
     } else {
-      if (currentPath[1] != 'auth') {
+      if (currentPath[1] != 'auth' || (currentPath[2] && currentPath[2] == 'logout')) {
         window.location.href = "/auth";
       }
     }

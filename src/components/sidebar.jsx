@@ -31,7 +31,7 @@ function Sidebar() {
         </div>
       </div>
       <div className="px-3 py-2">
-        <Link to="/logout" className="w-full flex items-center py-2 px-3 text-gray-700">
+        <Link to="/auth/logout" className="w-full flex items-center py-2 px-3 text-gray-700">
           <span className="mr-3">🚪</span>
           Déconnexion
         </Link>
